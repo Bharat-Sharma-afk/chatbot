@@ -3,7 +3,7 @@ import networkx as nx
 
 
 app = Flask(__name__)
-G = nx.read_adjlist("Chat.tsv", delimiter= '\t', create_using=nx.DiGraph())
+
 
 """
 Node = 'Hi! About which field do you wanr to know ?'
@@ -16,10 +16,11 @@ for itr in neighbour :
 def home():
     return render_template("index.html")
 
-@app.route("/get")
-def get_bot_response():
+@app.route("/<usid>/get")
+def get_bot_response(usid):
 	try : 
-		userText = request.args.get('msg')
+		userText = request.args.get('msg')\
+		G = nx.read_adjlist((str(usid)+".tsv"), delimiter= '\t', create_using=nx.DiGraph())
 		Next_questions = G.successors(userText)
 		for itr in Next_questions :
 			Node = itr
